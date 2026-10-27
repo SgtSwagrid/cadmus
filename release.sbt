@@ -6,7 +6,8 @@ ThisBuild / organization         := "com.alecdorrington"
 ThisBuild / organizationName     := "Alec Dorrington"
 ThisBuild / organizationHomepage := Some(uri("https://alecdorrington.com"))
 
-ThisBuild / versionScheme := Some("strict")
+// Still in beta: anything may change between minor versions until 1.0.0.
+ThisBuild / versionScheme := Some("early-semver")
 
 ThisBuild / licenses :=
   List("MIT" -> uri("https://opensource.org/licenses/MIT"))
