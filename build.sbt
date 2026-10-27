@@ -34,10 +34,21 @@ lazy val cadmus = projectMatrix
   .jvmPlatform(scalaVersions = Seq(scala3))
   .jsPlatform(scalaVersions = Seq(scala3))
 
+// Code using Cadmus compiled with `-Xdrop-docs`, where Scala keeps no comments
+// and asking for one throws, to test that each is read as none.
+lazy val `cadmus-without-docs` = project
+  .in(file("without-docs"))
+  .dependsOn(cadmus.jvm(scala3))
+  .settings(
+    publish / skip := true,
+    scalacOptions += "-Xdrop-docs",
+    libraryDependencies += "org.scalameta" %% "munit" % "1.3.6" % Test,
+  )
+
 lazy val `cadmus-root` = project
   .in(file("."))
   .enablePlugins(ScalaUnidocPlugin)
-  .aggregate(cadmus.projectRefs *)
+  .aggregate((cadmus.projectRefs :+ (`cadmus-without-docs`: ProjectReference))*)
   .settings(
     publish / skip := true,
 
