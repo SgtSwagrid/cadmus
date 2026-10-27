@@ -1,6 +1,7 @@
 package com.alecdorrington.cadmus
 
 import scala.quoted.*
+import scala.util.control.NonFatal
 import scala.util.matching.Regex
 
 /**
@@ -81,7 +82,8 @@ object Scaladoc:
     * (in a `derives` clause, or a given in its companion). That of a type
     * compiled before, as one from a library or from a file not recompiled
     * since, it reads from the type's TASTy only with the compiler option
-    * `-Xread-docs`. A Java class has none.
+    * `-Xread-docs`. A Java class has none, and nothing has one under
+    * `-Xdrop-docs`.
     *
     * @tparam A
     *   The type.
@@ -141,7 +143,8 @@ object Scaladoc:
   /**
     * Reads a comment into its parts. A tag starts a line outside any code
     * example, and runs to the next. A macro of one's own may read a symbol's
-    * comment this way, as `symbol.docstring.map(Scaladoc.parse)`.
+    * comment this way, as `symbol.docstring.map(Scaladoc.parse)`, though
+    * `docstring` throws rather than give none under `-Xdrop-docs`.
     *
     * @param comment
     *   The comment, with or without its delimiters and margin.
@@ -196,7 +199,18 @@ object Scaladoc:
   private def commented
     (using Quotes)
     (symbol: quotes.reflect.Symbol)
-    : Option[String] = symbol.docstring.orElse(symbol.moduleClass.docstring)
+    : Option[String] = docstring(symbol).orElse(docstring(symbol.moduleClass))
+
+  /**
+    * A symbol's comment. Under `-Xdrop-docs`, Scala keeps no comments, and
+    * asking for one throws rather than giving none.
+    */
+  private def docstring
+    (using Quotes)
+    (symbol: quotes.reflect.Symbol)
+    : Option[String] =
+    try symbol.docstring
+    catch case NonFatal(_) => None
 
   private def member[A : Type]
     (using Quotes)
