@@ -26,7 +26,7 @@ Named for [Cadmus](https://en.wikipedia.org/wiki/Cadmus), who brought the letter
 Add the following dependency to your `build.sbt`:
 
 ```scala
-libraryDependencies += "com.alecdorrington" %% "cadmus" % "0.1.0"
+libraryDependencies += "com.alecdorrington" %% "cadmus" % "0.1.1"
 ```
 
 Compiled with Scala `3.9.0`. For the JVM and, through [Scala.js](https://www.scala-js.org/), for JavaScript, where
