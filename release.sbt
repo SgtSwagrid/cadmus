@@ -1,7 +1,6 @@
-ThisBuild / description := "A reusable template for Scala libraries."
+ThisBuild / description := "Reads Scaladoc comments at compile time."
 
-ThisBuild / homepage :=
-  Some(uri("https://alecdorrington.com/scala-library-template"))
+ThisBuild / homepage := Some(uri("https://alecdorrington.com/cadmus"))
 
 ThisBuild / organization         := "com.alecdorrington"
 ThisBuild / organizationName     := "Alec Dorrington"
