@@ -275,7 +275,7 @@ node5 -> node1;
             <div class="cover">
              <div class="doc">
               <p>Reads the comment of a type: a class, trait, object, type alias or opaque type by its own, and a singleton type, as a case object's or an enum's case of no fields, by that of its term.</p>
-              <p>Scala keeps the comment of a type it compiles from source in the same run as the call, as it always does where the call is in the type's own file (in a <code>derives</code> clause, or a given in its companion). That of a type compiled before, as one from a library or from a file not recompiled since, it reads from the type's TASTy only with the compiler option <code>-Xread-docs</code>. A Java class has none.</p>
+              <p>Scala keeps the comment of a type it compiles from source in the same run as the call, as it always does where the call is in the type's own file (in a <code>derives</code> clause, or a given in its companion). That of a type compiled before, as one from a library or from a file not recompiled since, it reads from the type's TASTy only with the compiler option <code>-Xread-docs</code>. A Java class has none, and nothing has one under <code>-Xdrop-docs</code>.</p>
              </div>
              <h2 class="h200">Type parameters</h2>
              <dl class="attributes attributes-small">
@@ -358,11 +358,11 @@ node5 -> node1;
            <div class="originInfo"></div>
            <div class="memberDocumentation">
             <div class="documentableBrief doc">
-             <p>Reads a comment into its parts. A tag starts a line outside any code example, and runs to the next. A macro of one's own may read a symbol's comment this way, as <code>symbol.docstring.map(Scaladoc.parse)</code>.</p>
+             <p>Reads a comment into its parts. A tag starts a line outside any code example, and runs to the next. A macro of one's own may read a symbol's comment this way, as <code>symbol.docstring.map(Scaladoc.parse)</code>, though <code>docstring</code> throws rather than give none under <code>-Xdrop-docs</code>.</p>
             </div>
             <div class="cover">
              <div class="doc">
-              <p>Reads a comment into its parts. A tag starts a line outside any code example, and runs to the next. A macro of one's own may read a symbol's comment this way, as <code>symbol.docstring.map(Scaladoc.parse)</code>.</p>
+              <p>Reads a comment into its parts. A tag starts a line outside any code example, and runs to the next. A macro of one's own may read a symbol's comment this way, as <code>symbol.docstring.map(Scaladoc.parse)</code>, though <code>docstring</code> throws rather than give none under <code>-Xdrop-docs</code>.</p>
              </div>
              <h2 class="h200">Value parameters</h2>
              <dl class="attributes attributes-small">
