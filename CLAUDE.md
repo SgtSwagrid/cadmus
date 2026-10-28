@@ -14,7 +14,7 @@ Keep it concise and actionable.
 This is a Scala library that reads Scaladoc comments at compile time.
 
 It is one module in `com.alecdorrington.cadmus`, cross-built for the JVM and Scala.js, whose whole interface is
-`Scaladoc` (`src/main/scala/Scaladoc.scala`): the model of a parsed comment, the macros `of`, `ofMember`, `rawOf` and
+`Scaladoc` (`src/main/scala/com/alecdorrington/cadmus/Scaladoc.scala`): the model of a parsed comment, the macros `of`, `ofMember`, `rawOf` and
 `rawOfMember`, and the pure functions `parse` and `plain`. It is general: nothing in it serves one user alone (Iris
 aligns `params` with a `Mirror`'s labels itself).
 
@@ -50,6 +50,11 @@ Cadmus is developed here: make every change in this repository, by pull request.
   `cadmus_sjs1_3`, which `cadmus-root` aggregates (publishing nothing itself, and documenting the JVM side only).
 - The matrix pins `sourceDirectory` to this build's base, as sbt otherwise resolves a matrix's sources against the
   working directory, which is not this build's when another includes it.
+- `cadmus-root` shares the matrix's directory, so clears its source and resource directories alike: IntelliJ would
+  otherwise count it among the owners of the shared sources and highlight them by its classpath.
+- Sources sit in their packages' directories (`src/main/scala/com/alecdorrington/cadmus/`), with no `packagePrefix`:
+  IntelliJ's sbt import never gives a prefix to the module holding the sources the JVM and JS share, so every `package`
+  line there was flagged on each fresh import.
 - On Windows, run sbt as `sbt --server --batch <tasks>`. `testFull` runs every suite (`test` skips unchanged ones).
 
 ### Releases
