@@ -20,7 +20,7 @@ class PlainSuite extends FunSuite:
       "Sent by Client.ask and the json part, as https://json-schema.org says.",
     )
 
-  test("code examples are left out"):
+  test("code examples are left out, even if nothing else is left"):
     assertEquals(
       Scaladoc.plain(
         "Ask.\n\n{{{\nclient.ask(prompt)\n}}}\n\n" +
@@ -28,15 +28,13 @@ class PlainSuite extends FunSuite:
       ),
       "Ask.\n\nThen wait.",
     )
+    assertEquals(Scaladoc.plain("{{{\nrun()\n}}}"), "")
 
   test("other markup is kept"):
     assertEquals(
       Scaladoc.plain("Never `null`, and '''never''' empty."),
       "Never `null`, and '''never''' empty.",
     )
-
-  test("a text of nothing but code examples is empty"):
-    assertEquals(Scaladoc.plain("{{{\nrun()\n}}}"), "")
 
   test("a comment is rendered part by part, leaving out what is left empty"):
     val comment = Scaladoc(

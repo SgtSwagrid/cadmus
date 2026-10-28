@@ -18,12 +18,10 @@ enum Colour:
 
 class WithoutDocsSuite extends FunSuite:
 
-  test("a type's comment is none where Scala keeps none"):
+  test("a type's or member's comment is none where Scala keeps none"):
     assertEquals(Scaladoc.of[Note], None)
     assertEquals(Scaladoc.rawOf[Colour], None)
     assertEquals(Scaladoc.of[Colour.Red.type], None)
-
-  test("a member's comment is none where Scala keeps none"):
     assertEquals(
       Scaladoc.ofMember[Note]("shouted"),
       None,

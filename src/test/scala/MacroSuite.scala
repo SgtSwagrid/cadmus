@@ -86,13 +86,17 @@ class MacroSuite extends FunSuite:
       )),
     )
 
-  test("a type's comment is given as written"):
+  test("a type's or member's comment is given as written"):
     val raw = Scaladoc.rawOf[Person]
     assert(raw.exists(_.startsWith("/**")), raw)
     assert(raw.exists(_.endsWith("*/")), raw)
     assertEquals(
       raw.map(Scaladoc.parse),
       Scaladoc.of[Person],
+    )
+    assertEquals(
+      Scaladoc.rawOfMember[Person]("greet"),
+      Some("/** Greets them. */"),
     )
 
   test("a generic type is read from its comment, whatever its arguments"):
@@ -158,33 +162,25 @@ class MacroSuite extends FunSuite:
       List(None, None, None),
     )
 
-  test("a field or method is read from its comment"):
+  test(
+    "a field or method is read from its comment, a class's parameter from none",
+  ):
     assertEquals(
       List(
         Scaladoc.ofMember[Person]("greet"),
         Scaladoc.ofMember[Person]("older"),
         Scaladoc.ofMember[Settings.type]("timeout"),
+        Scaladoc.ofMember[Person]("name"),
       ).map(_.flatMap(_.description)),
       List(
         Some("Greets them."),
         Some("Their age next year."),
         Some("How long to wait, in seconds."),
+        None,
       ),
     )
 
-  test("a member's comment is given as written"):
-    assertEquals(
-      Scaladoc.rawOfMember[Person]("greet"),
-      Some("/** Greets them. */"),
-    )
-
-  test("a class's parameter keeps no comment of its own"):
-    assertEquals(
-      Scaladoc.ofMember[Person]("name"),
-      None,
-    )
-
-  test("a member that is missing or overloaded is refused at compile time"):
+  test("a member that is missing, overloaded or named at run time is refused"):
     assert(compileErrors("""Scaladoc.ofMember[Person]("height")""").contains(
       "has no field or method height",
     ))
@@ -193,8 +189,6 @@ class MacroSuite extends FunSuite:
         "is overloaded",
       ),
     )
-
-  test("a member's name must be known at compile time"):
     assert(
       compileErrors("""Scaladoc.ofMember[Person]("greet".trim)""").nonEmpty,
     )
