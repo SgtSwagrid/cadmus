@@ -32,6 +32,8 @@ aligns `params` with a `Mirror`'s labels itself).
   `-Xread-docs`, from TASTy; never of a constructor parameter (`caseFields` and `paramSymss` both have none).
 - Test the macros from outside the package (`MacroSuite` is in `com.alecdorrington.example`), with the documented
   types in the same file, as a user's code would expand them. Tests run on both platforms.
+- Tests needing `-Xdrop-docs`, which holds for a whole compilation, are in `src/test-without-docs`, compiled apart
+  from the others by the matrix `cadmus-without-docs`.
 
 See [README.md](README.md) for usage.
 
@@ -52,6 +54,8 @@ Cadmus is developed here: make every change in this repository, by pull request.
   working directory, which is not this build's when another includes it.
 - `cadmus-root` shares the matrix's directory, so clears its source and resource directories alike: IntelliJ would
   otherwise count it among the owners of the shared sources and highlight them by its classpath.
+- `cadmus-without-docs`, a second matrix in that directory, likewise clears all but its test sources, which it sets to
+  `src/test-without-docs/scala` alone. `cadmus-root` aggregates it with the library.
 - Sources sit in their packages' directories (`src/main/scala/com/alecdorrington/cadmus/`), with no `packagePrefix`:
   IntelliJ's sbt import never gives a prefix to the module holding the sources the JVM and JS share, so every `package`
   line there was flagged on each fresh import.

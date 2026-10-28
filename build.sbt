@@ -35,22 +35,30 @@ lazy val cadmus = projectMatrix
   .jsPlatform(scalaVersions = Seq(scala3))
 
 // Code using Cadmus compiled with `-Xdrop-docs`, where Scala keeps no comments
-// and asking for one throws, to test that each is read as none.
-lazy val `cadmus-without-docs` = project
-  .in(file("without-docs"))
-  .dependsOn(cadmus.jvm(scala3))
+// and asking for one throws, to test that each is read as none. The option
+// holds for a whole compilation, so these tests sit beside the others, in
+// `src/test-without-docs`, but are compiled apart from them.
+lazy val `cadmus-without-docs` = projectMatrix
+  .in(file("."))
+  .dependsOn(cadmus)
   .settings(
     publish / skip := true,
     scalacOptions += "-Xdrop-docs",
+    Compile / unmanagedSourceDirectories   := Nil,
+    Compile / unmanagedResourceDirectories := Nil,
+    Test / unmanagedSourceDirectories      := Seq(
+      (ThisBuild / baseDirectory).value / "src" / "test-without-docs" / "scala",
+    ),
+    Test / unmanagedResourceDirectories := Nil,
     libraryDependencies += "org.scalameta" %% "munit" % "1.3.6" % Test,
   )
+  .jvmPlatform(scalaVersions = Seq(scala3))
+  .jsPlatform(scalaVersions = Seq(scala3))
 
 lazy val `cadmus-root` = project
   .in(file("."))
   .enablePlugins(ScalaUnidocPlugin)
-  .aggregate(
-    (cadmus.projectRefs :+ (`cadmus-without-docs`: ProjectReference)) *,
-  )
+  .aggregate((cadmus.projectRefs ++ `cadmus-without-docs`.projectRefs) *)
   .settings(
     publish / skip := true,
 
