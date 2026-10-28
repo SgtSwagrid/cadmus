@@ -5,11 +5,16 @@ import munit.FunSuite
 
 class ParseSuite extends FunSuite:
 
-  test("a comment of one line is its description"):
+  test("a comment of one line is its description, if it has one"):
     assertEquals(
       Scaladoc.parse("/** Warm. */"),
       Scaladoc(Some("Warm.")),
     )
+    assertEquals(
+      Scaladoc.parse("/** @param name Their name. */").description,
+      None,
+    )
+    assertEquals(Scaladoc.parse("/** */"), Scaladoc())
 
   test("a description is kept as written, without its margin"):
     val comment = """/**
@@ -22,13 +27,11 @@ class ParseSuite extends FunSuite:
       Scaladoc.parse(comment).description,
       Some("A review\n  of writing.\n\nKept short."),
     )
-
-  test("a description begun on the comment's first line is kept whole"):
-    val comment = """/** A review
+    val begun = """/** A review
       * of writing.
       */"""
     assertEquals(
-      Scaladoc.parse(comment).description,
+      Scaladoc.parse(begun).description,
       Some("A review\nof writing."),
     )
 
@@ -169,12 +172,6 @@ class ParseSuite extends FunSuite:
       Scaladoc(Some("Mail me @ home.\n@return.")),
     )
 
-  test("a comment of tags alone has no description"):
-    assertEquals(
-      Scaladoc.parse("/** @param name Their name. */").description,
-      None,
-    )
-
   test("a comment's text is read without delimiters or margin"):
     assertEquals(
       Scaladoc.parse("A person.\n\n@param name Their name."),
@@ -183,6 +180,3 @@ class ParseSuite extends FunSuite:
         Map("name" -> "Their name."),
       ),
     )
-
-  test("an empty comment has no parts"):
-    assertEquals(Scaladoc.parse("/** */"), Scaladoc())
