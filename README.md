@@ -32,7 +32,7 @@ libraryDependencies += "com.alecdorrington" %% "cadmus" % "{version}"
 
 ## 🚀 Usage
 
-`Scaladoc.of[A]` reads the comment of a type, as a [`Scaladoc`](src/main/scala/Scaladoc.scala), or `None` where
+`Scaladoc.of[A]` reads the comment of a type, as a [`Scaladoc`](src/main/scala/com/alecdorrington/cadmus/Scaladoc.scala), or `None` where
 there is none:
 
 ```scala

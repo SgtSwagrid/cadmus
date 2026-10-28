@@ -1,4 +1,3 @@
-import IdeSettings.packagePrefix
 import sbt._
 import sbt.Keys._
 import sbtunidoc.BaseUnidocPlugin.autoImport.*
@@ -19,12 +18,13 @@ ThisBuild / scalacOptions ++= Seq(
 )
 
 // Every project is named after the library so as not to clash with the
-// projects of a build that includes this one by reference.
+// projects of a build that includes this one by reference. The matrix's sources
+// sit in their packages' directories rather than under a package prefix, as
+// IntelliJ never gives one to the sources the JVM and JS share.
 lazy val cadmus = projectMatrix
   .in(file("."))
   .settings(
-    name          := "cadmus",
-    packagePrefix := "com.alecdorrington.cadmus",
+    name := "cadmus",
 
     // A matrix resolves sources against the working directory, which is not
     // this build's base when another build includes it by reference.
@@ -48,13 +48,17 @@ lazy val `cadmus-without-docs` = project
 lazy val `cadmus-root` = project
   .in(file("."))
   .enablePlugins(ScalaUnidocPlugin)
-  .aggregate((cadmus.projectRefs :+ (`cadmus-without-docs`: ProjectReference))*)
+  .aggregate(
+    (cadmus.projectRefs :+ (`cadmus-without-docs`: ProjectReference)) *,
+  )
   .settings(
     publish / skip := true,
 
     // The root shares the matrix's directory, so must not build its sources.
-    Compile / unmanagedSourceDirectories := Nil,
-    Test / unmanagedSourceDirectories    := Nil,
+    Compile / unmanagedSourceDirectories   := Nil,
+    Test / unmanagedSourceDirectories      := Nil,
+    Compile / unmanagedResourceDirectories := Nil,
+    Test / unmanagedResourceDirectories    := Nil,
 
     // The JS side would only document the same sources again.
     ScalaUnidoc / unidoc / unidocProjectFilter :=
