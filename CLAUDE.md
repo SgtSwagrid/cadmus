@@ -54,9 +54,10 @@ Cadmus is developed here: make every change in this repository, by pull request.
 
 ### Releases
 
-1. Land the changes on `main` by pull request, the last of them setting the README's installation line to the new
-   version. Cadmus is in beta, versioned by early semver (`versionScheme`): while it is `0.x`, the minor version goes
-   up for any change that can break a user's build or behaviour, and the patch version for anything else.
+1. Land the changes on `main` by pull request. The README's installation line names no version (it reads
+   `{version}`, pointing to the latest release), so a release leaves it as it is. Cadmus is still a prototype,
+   versioned by early semver (`versionScheme`): while it is `0.x`, the minor version goes up for any change that can
+   break a user's build or behaviour, and the patch version for anything else.
 2. Publish a GitHub release of `main` tagged `v<version>`, with notes written for a user (the installation line, then
    what is Changed, Added and Fixed). `publish.yml` then publishes `cadmus_3` and `cadmus_sjs1_3` to Maven Central
    through `sbt-ci-release`, which takes the version from the tag, and `docs.yml` publishes the Scaladoc at

@@ -12,7 +12,7 @@
 </div>
 
 > [!WARNING]
-> Cadmus is in beta. Anything may change between minor versions.
+> Cadmus is still a prototype. Anything could be broken or change between minor versions.
 
 Macros reading the Scaladoc comment of a type, or of one of its members, into its parts: the description, what
 each `@param`, `@tparam` and `@return` tag says, and every other tag. Each text is kept as written, markup and all,
@@ -23,14 +23,12 @@ Named for [Cadmus](https://en.wikipedia.org/wiki/Cadmus), who brought the letter
 
 ## ⬇️ Installation
 
-Add the following dependency to your `build.sbt`:
+The following applies for [Scala 3](https://www.scala-lang.org/) projects built with [sbt 2](https://www.scala-sbt.org/).
+Add the library to your `build.sbt` file, with the desired version number (e.g. [latest](../../releases/latest)):
 
 ```scala
-libraryDependencies += "com.alecdorrington" %% "cadmus" % "0.1.1"
+libraryDependencies += "com.alecdorrington" %% "cadmus" % "{version}"
 ```
-
-Compiled with Scala `3.9.0`. For the JVM and, through [Scala.js](https://www.scala-js.org/), for JavaScript, where
-sbt 2 resolves `%%` to the right artefact (sbt 1 needs `%%%`).
 
 ## 🚀 Usage
 
